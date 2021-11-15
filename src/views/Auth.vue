@@ -1,0 +1,130 @@
+<template>
+  <nav
+    class="navbar navbar-light navbar-expand-lg fixed-top"
+    id="mainNav"
+  ></nav>
+  <form @submit.prevent="formHandler">
+    <div class="container">
+      <br />
+      <br />
+      <br />
+      <h1>Уійдіть у свій обліковий запис</h1>
+      <label for="email"><b>Email</b></label>
+      <input
+        id="email"
+        type="text"
+        placeholder="Введіть Email"
+        name="email"
+        v-model="email"
+        required
+      />
+
+      <label for="psw"><b>Пароль</b></label>
+      <input
+        id="psw"
+        type="password"
+        placeholder="Введіть пароль"
+        name="psw"
+        v-model="password"
+        required
+      />
+
+      <button type="submit" class="registerbtn">Увійти</button>
+    </div>
+    <div class="container signin">
+      <p>
+        Ще не маєте акаунта? <router-link to="/register">Створити</router-link>.
+      </p>
+    </div>
+    <br />
+    <br />
+  </form>
+</template>
+
+<script>
+export default {
+  name: "Auth",
+  data() {
+    return {
+      email: "",
+      password: "",
+    };
+  },
+  methods: {
+    async formHandler() {
+      const formData = {
+        email: this.email,
+        password: this.password,
+      };
+
+      try {
+        await this.$store.dispatch("login", formData);
+        this.$router.push("/");
+      } catch (e) {
+        console.log("Не правильний пароль або логін");
+      }
+    },
+  },
+};
+</script>
+
+<style scoped>
+* {
+  box-sizing: border-box;
+}
+
+/* Add padding to containers */
+.container {
+  padding: 16px;
+}
+
+/* Full-width input fields */
+input[type="text"],
+input[type="password"] {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  display: inline-block;
+  border: none;
+  background: #f1f1f1;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+/* Overwrite default styles of hr */
+hr {
+  border: 1px solid #f1f1f1;
+  margin-bottom: 25px;
+}
+
+/* Set a style for the submit/register button */
+.registerbtn {
+  background-color: #f05f40;
+  color: white;
+  padding: 16px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  opacity: 0.9;
+}
+
+.registerbtn:hover {
+  opacity: 1;
+}
+
+/* Add a blue text color to links */
+a {
+  color: dodgerblue;
+}
+
+/* Set a grey background color and center the text of the "sign in" section */
+.signin {
+  background-color: #f1f1f1;
+  text-align: center;
+}
+</style>
